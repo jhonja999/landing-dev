@@ -9,7 +9,7 @@ import compress from "@playform/compress";
 
 // https://astro.build/config
 export default defineConfig({
-	site: "https://landingpad.cosmicthemes.com/", //cambiar dominio por el de robots.txt
+	site: "https://landing-dev.vercel.app", //cambiar dominio por el de robots.txt
 	adapter: netlify({
 		imageCDN: false,
 	}),
@@ -37,10 +37,16 @@ export default defineConfig({
 		},
 	},
 	image: {
-		domains: ["images.unsplash.com", "i.imgur.com"], // Dominios permitidos
+		domains: [
+		  "images.unsplash.com",
+		  "i.imgur.com",
+		  "res.cloudinary.com" // ✅ Decloudinary
+		],
 		remotePatterns: [
 		  { protocol: "https", hostname: "**.unsplash.com" },
-		  { protocol: "https", hostname: "**.imgur.com" }
+		  { protocol: "https", hostname: "**.imgur.com" },
+		  { protocol: "https", hostname: "**.cloudinary.com" } // ✅ wildcard por subdominio si aplica
 		]
-	  },
+	  }
+	  ,
 });

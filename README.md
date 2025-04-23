@@ -1,6 +1,6 @@
 # Bienvenido a Landing Pad 🚀
 Este proyecto es una **reimaginación tipo CMS para enlaces de portafolio**, basada en el diseño y funcionalidad del sitio original: [uxjairo.vercel.app](https://uxjairo.vercel.app).
-
+https://i.imgur.com/3zgtn4y.png
 📌 Reimaginado y adaptado por **Jairo Vargas**  
 🎨 Diseño original por [Cosmic Themes](https://cosmicthemes.com/)
 

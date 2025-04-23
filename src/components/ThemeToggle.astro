@@ -1,0 +1,133 @@
+---
+// ThemeToggle.astro - Botón optimizado para cambiar entre tema claro y oscuro
+import { getCollection } from "astro:content";
+
+// Obtener preferencia de tema actual
+const bio = await getCollection("bio");
+const currentTheme = bio[0].data.theme || "light";
+---
+
+<button 
+  id="theme-toggle" 
+  aria-label="Cambiar tema"
+  class="theme-toggle-btn fixed bottom-6 right-6 z-50 flex h-12 w-24 cursor-pointer items-center rounded-full bg-gradient-to-r from-blue-400 to-violet-500 p-1 shadow-lg transition-all duration-200 hover:shadow-xl dark:from-indigo-600 dark:to-purple-700"
+  data-theme-toggle
+>
+  <span class="sr-only">Cambiar tema</span>
+  <div class={`toggle-thumb h-10 w-10 rounded-full bg-white text-blue-600 flex items-center justify-center transform transition-transform duration-200 ease-out ${currentTheme === "dark" ? "translate-x-12 !text-indigo-900" : ""}`}>
+    {currentTheme === "dark" 
+      ? <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+        </svg>
+      : <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+        </svg>
+    }
+  </div>
+</button>
+
+<style>
+  .theme-toggle-btn {
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.2);
+    will-change: transform, box-shadow;
+  }
+  
+  .theme-toggle-btn:hover {
+    box-shadow: 0 6px 16px rgba(79, 70, 229, 0.3);
+  }
+  
+  .toggle-thumb {
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    will-change: transform;
+  }
+  
+  /* Estilos para modo oscuro */
+  :global(.dark) .theme-toggle-btn {
+    box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+  }
+  
+  :global(.dark) .theme-toggle-btn:hover {
+    box-shadow: 0 6px 16px rgba(139, 92, 246, 0.4);
+  }
+  
+  /* Estilos globales para transiciones suaves del tema */
+  :global(.theme-transition) {
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+</style>
+
+<script>
+  // Obtener el botón
+  const themeToggle = document.getElementById("theme-toggle");
+  const htmlElement = document.documentElement;
+  const toggleThumb = themeToggle?.querySelector(".toggle-thumb");
+  
+  // Precargar los SVG para evitar parpadeos
+  const sunIcon = `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>`;
+  const moonIcon = `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>`;
+  
+  // Agregar clase para transiciones CSS globales
+  function applyThemeTransition() {
+    document.body.classList.add("theme-transition");
+    // Usar requestAnimationFrame para agrupar cambios visuales
+    requestAnimationFrame(() => {
+      setTimeout(() => {
+        document.body.classList.remove("theme-transition");
+      }, 200);
+    });
+  }
+  
+  // Función optimizada para cambiar el tema
+  function toggleTheme() {
+    // Aplicar transición suave
+    applyThemeTransition();
+    
+    // Obtener el tema actual
+    const isDark = htmlElement.classList.contains("dark");
+    
+    // Cambiar el tema
+    if (isDark) {
+      htmlElement.classList.remove("dark");
+      localStorage.setItem("theme", "light");
+      
+      // Actualizar el thumb con clase y contenido
+      if (toggleThumb) {
+        toggleThumb.classList.remove("translate-x-12", "!text-indigo-900");
+        toggleThumb.classList.add("text-blue-600");
+        toggleThumb.innerHTML = sunIcon;
+      }
+    } else {
+      htmlElement.classList.add("dark");
+      localStorage.setItem("theme", "dark");
+      
+      // Actualizar el thumb con clase y contenido
+      if (toggleThumb) {
+        toggleThumb.classList.add("translate-x-12", "!text-indigo-900");
+        toggleThumb.classList.remove("text-blue-600");
+        toggleThumb.innerHTML = moonIcon;
+      }
+    }
+  }
+  
+  // Agregar evento de click con debounce para evitar múltiples activaciones
+  let isThemeChanging = false;
+  themeToggle?.addEventListener("click", () => {
+    if (!isThemeChanging) {
+      isThemeChanging = true;
+      toggleTheme();
+      setTimeout(() => {
+        isThemeChanging = false;
+      }, 300);
+    }
+  });
+  
+  // Sincronizar con la preferencia del sistema si no hay una preferencia guardada
+  const userPreference = localStorage.getItem("theme");
+  if (!userPreference && window.matchMedia("(prefers-color-scheme: dark)").matches) {
+    htmlElement.classList.add("dark");
+    if (toggleThumb) {
+      toggleThumb.classList.add("translate-x-12", "!text-indigo-900");
+    }
+  }
+</script>

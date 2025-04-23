@@ -1,0 +1,462 @@
+---
+import { getCollection, render } from "astro:content";
+import { Image } from "astro:assets";
+
+// Layout principal
+import BaseLayout from "@layouts/BaseLayout.astro";
+
+// Componentes
+import Socials from "@components/Socials/Socials.astro";
+import Links from "@components/Links/Links.astro";
+import Projects from "@components/Projects/Projects.astro";
+
+// Se obtiene la colección 'bio' desde el contenido
+const bio = await getCollection("bio");
+
+// Se selecciona el primer perfil
+const profile = bio[0];
+const { name, avatar, background, blur } = profile.data;
+
+// Se renderiza el contenido Markdown del perfil
+const { Content } = await render(profile);
+
+// Meta información para SEO
+const pageTitle = `Enlaces y redes de ${name}`;
+const pageDescription = `Proyectos destacados de ${name}, y enlaces a sus redes sociales para seguirlo.`;
+---
+
+<BaseLayout
+	title={pageTitle}
+	description={pageDescription}
+	image={avatar}
+>
+	<div class="page-wrapper ">
+		<!-- Primera Parte: Perfil, Links y Redes Sociales -->
+		<section class="profile-section relative min-h-[100lvh]">
+			<!-- Imagen de fondo con optimización de carga -->
+			<div class="absolute inset-0 transition-opacity duration-500 ">
+				<Image
+					src={background}
+					alt="Fondo decorativo"
+					widths={[400, 800, 1200, 1600, 1920]}
+					sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 100vw"
+					quality="mid"
+					loading="eager"
+					aria-hidden="true"
+					class="h-full w-full object-cover"
+					fetchpriority="high"
+				/>
+			</div>
+
+			<!-- Capa con desenfoque usando variables CSS -->
+			<div
+				class:list={[
+					"absolute inset-0 transition-all duration-500 ease-in-out",
+					"bg-white/30 dark:bg-black/70", 
+					{
+						"backdrop-blur-lg": blur === "blur",
+					},
+				]}
+			>
+			</div>
+
+			<!-- Contenido principal con estructura semántica mejorada -->
+			<section 
+				id="profile" 
+				class="site-container relative pt-16 pb-8 text-center md:pt-24"
+				aria-labelledby="profile-heading"
+			>
+				<!-- Imagen de perfil con efectos mejorados y accesibilidad -->
+				<div class="mx-auto flex justify-center -mt-8 ">
+					<figure class="profile-avatar">
+						<Image
+							src={avatar}
+							alt={`Foto de perfil de ${name}`}
+							width={140}
+							height={140}
+							densities={[1, 1.5, 2]}
+							quality="high"
+							loading="eager"
+							fetchpriority="high"
+							class="aspect-square max-w-32 rounded-full object-cover transition-all duration-300 hover:shadow-xl"
+						/>
+					</figure>
+				</div>
+
+				<!-- Nombre con transiciones suaves y accesibilidad mejorada -->
+				<h1 
+					id="profile-heading"
+					class="mt-5 text-2xl font-bold bg-gradient-text transition-colors duration-300 sm:text-3xl"
+				>
+					{name}
+				</h1>
+
+				<!-- Descripción biográfica en formato Markdown con estilos mejorados -->
+				<div class="card markdown-content animate-fadeIn mt-3 rounded-lg bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm p-5 mx-auto max-w-2xl shadow-md text-sm leading-relaxed text-pretty transition-all duration-300 sm:text-base">
+					<Content />
+				</div>
+			</section>
+
+			<!-- Contenedor para las secciones superiores -->
+			<div class="site-container upper-sections pb-12">
+				<!-- Redes sociales -->
+				<section class="section-block -mt-6" aria-label="Redes sociales">
+					<Socials />
+				</section>
+
+				<!-- Enlaces del portafolio -->
+				<section class="section-block mt-1" aria-label="Enlaces de interés">
+					<Links />
+				</section>
+
+				<!-- Separador visual -->
+				<div class="section-separator">
+					<hr class="separator-line" />
+				</div>
+
+				<!-- Indicador de desplazamiento -->
+				<div class="scroll-indicator">
+					<p class="scroll-text">Desliza hacia abajo para ver mis proyectos</p>
+					<div class="scroll-arrow">
+						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="arrow-down">
+							<path d="M12 5v14M5 12l7 7 7-7"></path>
+						</svg>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- Segunda Parte: Proyectos en Grid con Slider -->
+		<section id="projects-section" class="projects-section relative min-h-[100lvh]">
+      <!-- Fondo con imagen personalizada -->
+      <div
+        class="absolute inset-0 bg-cover bg-center opacity-80"
+        style="background-image: url('src/assets/images/projectsBg.png');"
+      ></div>
+    
+      <!-- Overlay con gradiente para efecto suave -->
+      <div
+        class="absolute inset-0 bg-gradient-to-b from-white/80 to-slate-200/90 dark:from-slate-900/60 dark:to-slate-800/70"
+      ></div>
+    
+      <div class="site-container relative pt-16 pb-12">
+        <h2 class="section-title text-center text-2xl font-bold bg-gradient-text mb-8 sm:text-3xl">
+          Mis Proyectos
+        </h2>
+    
+        <div class="projects-grid">
+          <Projects />
+        </div>
+      </div>
+    </section>
+    
+	</div>
+</BaseLayout>
+
+<style>
+  /* Estilos básicos (mantenemos los estilos originales) */
+  .profile-avatar {
+    position: relative;
+    display: inline-block;
+    padding: 5px;
+    z-index: 5;
+  }
+  
+  .profile-avatar::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    padding: 5px;
+    background: var(--gradient-accent, linear-gradient(45deg, #4f46e5, #818cf8, #4f46e5));
+    -webkit-mask: 
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0.9;
+    transform: scale(1);
+    transition: all 0.3s ease;
+  }
+  
+  .profile-avatar::after {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    right: -4px;
+    bottom: -4px;
+    border-radius: 9999px;
+    background: var(--gradient-accent, linear-gradient(45deg, #4f46e5, #818cf8, #4f46e5));
+    background-size: 200% 200%;
+    z-index: -1;
+    filter: blur(8px);
+    opacity: 0.4;
+    transition: all 0.3s ease;
+    animation: gradient-shift 3s ease infinite;
+  }
+  
+  .profile-avatar:hover::before {
+    transform: scale(1.05);
+    opacity: 1;
+  }
+  
+  .profile-avatar:hover::after {
+    opacity: 0.7;
+    filter: blur(12px);
+  }
+  
+  /* Texto con gradiente */
+  .bg-gradient-text {
+    background: var(--gradient-accent, linear-gradient(45deg, #3730a3, #6366f1, #818cf8));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    display: inline-block;
+  }
+  
+  /* Animación secuencial para las secciones */
+  .upper-sections {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fade-in 0.8s forwards 0.3s;
+  }
+  
+  .section-block:nth-child(1) {
+    animation: fadeIn 0.5s ease 0.2s forwards;
+    opacity: 0;
+  }
+  
+  .section-block:nth-child(2) {
+    animation: fadeIn 0.5s ease 0.4s forwards;
+    opacity: 0;
+  }
+  
+  /* Variables CSS para colores y efectos, ampliando desde global.css */
+  :root {
+    --accent-light: #e0e7ff;
+    --accent-dark: #8077ff;
+    --gradient-accent: linear-gradient(45deg, #3730a3, #6366f1, #818cf8);
+
+	--scroll-text-color: #222222; /* Color negro para modo claro */
+  }
+  
+  .dark {
+  /* Variables existentes */
+  --accent-light: #c7d2fe;
+  --accent-dark: #6366f1;
+  --gradient-accent: linear-gradient(45deg, #4f46e5, #818cf8, #6366f1);
+  
+  /* Cambio de la variable para modo oscuro */
+  --scroll-text-color: #a78bfa; /* Color púrpura para modo oscuro */
+}
+  
+  /* Nuevos estilos para las secciones y separador */
+  .page-wrapper {
+    scroll-snap-type: y mandatory;
+    height: 100vh;
+    overflow-y: auto;
+    scroll-behavior: smooth;
+  }
+  
+  .profile-section, .projects-section {
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+  }
+  
+  .section-separator {
+    margin: 2rem auto;
+    max-width: 80%;
+  }
+  
+  .separator-line {
+    border: none;
+    height: 1px;
+    background: linear-gradient(90deg, 
+      transparent, 
+      var(--accent-dark), 
+      transparent);
+    opacity: 0.6;
+  }
+  
+  /* Estilos para el indicador de scroll */
+  .scroll-indicator {
+    text-align: center;
+    margin-top: 2rem;
+    padding-bottom: 1.5rem;
+    animation: bounce 2s infinite;
+  }
+  
+  .scroll-text {
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent-light);
+    font-weight: 500;
+    opacity: 0.8;
+	text-shadow: 0 2px 4px rgba(0,0,0,0.6);
+	transition: all 0.3s ease;
+	
+  }
+  
+  .scroll-arrow {
+    display: flex;
+    justify-content: center;
+	
+  }
+  
+  .arrow-down {
+    stroke: var(--accent-light);
+    opacity: 0.8;
+	
+  }
+  
+  /* Estilos para la sección de proyectos */
+  .projects-section {
+    position: relative;
+  }
+  
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+  
+  .section-title {
+    position: relative;
+    padding-bottom: 1rem;
+  }
+  
+  .section-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background: var(--gradient-accent);
+    border-radius: 4px;
+  }
+  
+  /* Animaciones */
+  @keyframes gradient-shift {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+  
+  @keyframes fade-in {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(15px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+      transform: translateY(0);
+    }
+    40% {
+      transform: translateY(-10px);
+    }
+    60% {
+      transform: translateY(-5px);
+    }
+  }
+  
+  /* Estilos responsivos */
+  @media (max-width: 768px) {
+    .projects-grid {
+      grid-template-columns: 1fr;
+    }
+    
+    .scroll-text {
+      font-size: 0.8rem;
+    }
+  }
+  
+  /* Mejoras para dispositivos móviles */
+  @media (max-width: 640px) {
+    .profile-avatar::after {
+      filter: blur(6px);
+    }
+    
+    .card {
+      margin-left: 0.75rem;
+      margin-right: 0.75rem;
+	  
+    }
+    
+    .section-separator {
+      max-width: 90%;
+    }
+  }
+  
+  /* Reducir animaciones si el usuario prefiere menos movimiento */
+  @media (prefers-reduced-motion: reduce) {
+    .page-wrapper {
+      scroll-snap-type: none;
+      scroll-behavior: auto;
+    }
+  
+    .profile-avatar::after,
+    .upper-sections,
+    .section-block,
+    .scroll-indicator {
+      animation: none;
+      transition: opacity 0.1s ease;
+    }
+    
+    .profile-avatar:hover::before,
+    .profile-avatar:hover::after {
+      transform: none;
+    }
+  }
+</style>
+
+<script>
+  // Script para manejar el desplazamiento suave
+  document.addEventListener('DOMContentLoaded', () => {
+    const scrollIndicator = document.querySelector('.scroll-indicator');
+    
+    if (scrollIndicator) {
+      scrollIndicator.addEventListener('click', () => {
+        document.getElementById('projects-section')?.scrollIntoView({
+          behavior: 'smooth'
+        });
+      });
+    }
+    
+    // Detectar cambio de sección para animaciones
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+        }
+      });
+    }, { threshold: 0.2 });
+    
+    // Observar la sección de proyectos
+    const projectsSection = document.getElementById('projects-section');
+    if (projectsSection) {
+      observer.observe(projectsSection);
+    }
+  });
+</script>

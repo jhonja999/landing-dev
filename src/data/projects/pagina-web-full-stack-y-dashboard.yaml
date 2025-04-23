@@ -1,0 +1,12 @@
+title: Página web Full-Stack y Dashboard
+description: Autenticación y Dashboard, CRUD y Gráficas
+url: https://dashboard-emp.vercel.app/
+image: ./pagina-web-full-stack-y-dashboard/image.jpg
+order: 1
+tags:
+  - ClerkJs
+  - Axios
+  - Neon
+  - Prisma
+  - React
+  - NextJs

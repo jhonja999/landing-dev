@@ -1,0 +1,39 @@
+---
+ // Layout principal que define estructura HTML, estilos globales, SEO, etc.
+ import BaseLayout from "@layouts/BaseLayout.astro";
+---
+
+<!--
+  Página de error 404 (no encontrada).
+  Incluye título, mensaje de error, y un botón para regresar al inicio.
+-->
+<BaseLayout title="404" description="Error 404, página no encontrada." noindex={true}>
+	<!-- Contenedor principal con fondo blanco o oscuro -->
+	<div class="dark:bg-base-950 relative min-h-[100lvh] bg-white">
+		<section class="site-container pt-36 text-center md:pt-44">
+			<div class="mx-auto max-w-xl px-4 text-center">
+				<!-- Título principal del error -->
+				<h1 class="text-3xl md:text-4xl lg:text-5xl">¡Página no encontrada!</h1>
+
+				<!-- Descripción con sugerencia -->
+				<p class="mt-4 opacity-80">
+					Lo sentimos, uno de nuestros enlaces parece estar roto.
+					Intenta nuevamente o regresa a la página de inicio.
+				</p>
+
+				<!-- Botón para volver al inicio -->
+				<div class="mt-8 flex justify-center">
+					<a
+						href="/"
+						class="bg-btn-light text-btn-light-text hover:bg-btn-light-hover 
+						       dark:bg-btn-dark dark:text-btn-dark-text dark:hover:bg-btn-dark-hover 
+						       flex items-center justify-center gap-1 rounded-full px-5 py-2 
+						       transition-all duration-300 active:scale-95"
+					>
+						Ir a la página de inicio
+					</a>
+				</div>
+			</div>
+		</section>
+	</div>
+</BaseLayout>

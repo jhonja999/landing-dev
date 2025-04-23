@@ -1,0 +1,294 @@
+---
+import { getCollection } from "astro:content";
+import { Image } from "astro:assets";
+
+// Obtener todos los proyectos y ordenarlos por la propiedad "order"
+const projects = await getCollection("projects");
+const sortedProjects = projects.sort((a, b) => a.data.order - b.data.order);
+---
+
+<div class="projects-container">
+	{
+		sortedProjects.map((project) => (
+			<div class="project-card">
+				<a href={project.data.url} target="_blank" rel="noopener noreferrer" class="project-link">
+					<div class="image-wrapper">
+						{typeof project.data.image === "string" ? (
+							<img
+								src={project.data.image}
+								alt={`Imagen del proyecto ${project.data.title}`}
+								loading="lazy"
+								class="project-image"
+							/>
+						) : (
+							<Image
+								src={project.data.image}
+								alt={`Imagen del proyecto ${project.data.title}`}
+								widths={[500]}
+								sizes="(max-width: 640px) 100vw, 500px"
+								loading="lazy"
+								class="project-image"
+							/>
+						)}
+
+						<div class="image-overlay">
+							<span class="view-text">Ver proyecto</span>
+						</div>
+					</div>
+
+					<div class="project-details">
+						<h3 class="project-title">{project.data.title}</h3>
+						<p class="project-description">{project.data.description}</p>
+
+						{project.data.tags && project.data.tags.length > 0 && (
+							<div class="tags-list">
+								{project.data.tags.map((tag) => (
+									<span class="tag">{tag}</span>
+								))}
+							</div>
+						)}
+					</div>
+				</a>
+			</div>
+		))
+	}
+</div>
+
+<style>
+	/* Contenedor principal con grid fijo de 2 columnas */
+	.projects-container {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		gap: 1.5rem;
+		width: 100%;
+		max-width: 1200px;
+		margin: 0 auto;
+	}
+
+	/* Tarjeta de proyecto con glassmorphism */
+	.project-card {
+		position: relative;
+		border-radius: 1rem;
+		overflow: hidden;
+		background: rgba(255, 255, 255, 0.7);
+		backdrop-filter: blur(10px);
+		-webkit-backdrop-filter: blur(10px);
+		box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+		border: 1px solid rgba(255, 255, 255, 0.2);
+		transition: all 0.3s ease;
+		height: 100%;
+	}
+
+	.dark .project-card {
+		background: rgba(30, 41, 59, 0.7);
+		border: 1px solid rgba(30, 41, 59, 0.3);
+		box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+	}
+
+	.project-card:hover {
+		transform: translateY(-5px);
+		box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+	}
+
+	/* Enlace del proyecto */
+	.project-link {
+		display: flex;
+		flex-direction: column;
+		height: 100%;
+		text-decoration: none;
+		color: inherit;
+	}
+
+	/* Contenedor de imagen */
+	.image-wrapper {
+		position: relative;
+		width: 100%;
+		height: 0;
+		padding-bottom: 56.25%; /* Relación de aspecto 16:9 */
+		overflow: hidden;
+	}
+
+	.project-image {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		transition: transform 0.5s ease;
+	}
+
+	.image-overlay {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background: linear-gradient(to top, rgba(79, 70, 229, 0.8), rgba(99, 102, 241, 0.6));
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		opacity: 0;
+		transition: opacity 0.3s ease;
+	}
+
+	.project-card:hover .project-image {
+		transform: scale(1.05);
+	}
+
+	.project-card:hover .image-overlay {
+		opacity: 1;
+	}
+
+	.view-text {
+		color: white;
+		font-weight: 600;
+		padding: 0.5rem 1.25rem;
+		border: 2px solid white;
+		border-radius: 2rem;
+		font-size: 0.9rem;
+		letter-spacing: 0.05em;
+		transform: translateY(10px);
+		transition: all 0.3s ease;
+	}
+
+	.project-card:hover .view-text {
+		transform: translateY(0);
+	}
+
+	/* Detalles del proyecto */
+	.project-details {
+		padding: 1.5rem;
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+	}
+
+	.project-title {
+		margin: 0 0 0.75rem;
+		font-size: 1.25rem;
+		font-weight: 700;
+		color: #1e293b;
+		line-height: 1.3;
+	}
+
+	.dark .project-title {
+		color: #f1f5f9;
+	}
+
+	.project-description {
+		margin: 0 0 1.25rem;
+		font-size: 0.95rem;
+		line-height: 1.5;
+		color: #64748b;
+		flex: 1;
+	}
+
+	.dark .project-description {
+		color: #cbd5e1;
+	}
+
+	/* Etiquetas */
+	.tags-list {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem;
+		margin-top: auto;
+	}
+
+	.tag {
+		display: inline-block;
+		background: rgba(79, 70, 229, 0.1);
+		color: #4f46e5;
+		padding: 0.25rem 0.75rem;
+		border-radius: 9999px;
+		font-size: 0.75rem;
+		font-weight: 500;
+	}
+
+	.dark .tag {
+		background: rgba(129, 140, 248, 0.15);
+		color: #a5b4fc;
+	}
+
+	/* Responsive: Una columna en móviles */
+	@media (max-width: 768px) {
+		.projects-container {
+			grid-template-columns: 1fr;
+		}
+	}
+
+	/* Reducir animaciones si el usuario lo prefiere */
+	@media (prefers-reduced-motion: reduce) {
+		.project-card,
+		.project-image,
+		.image-overlay,
+		.view-text {
+			transition: none;
+		}
+
+		.project-card:hover .project-image {
+			transform: none;
+		}
+
+		.project-card:hover {
+			transform: none;
+		}
+	}
+</style>
+
+<!-- ---
+import { getCollection } from "astro:content";
+import { Image } from "astro:assets";
+
+const projects = await getCollection("projects");
+
+const sortedProjects = projects.sort((a, b) => {
+  if (a.data.order < b.data.order) {
+    return -1;
+  }
+  if (a.data.order > b.data.order) {
+    return 1;
+  }
+  return 0;
+});
+---
+
+<section id="projects" class="site-container relative pt-8">
+  <h2 class="text-center text-xl font-bold mb-6">Mis Proyectos</h2>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    {
+      sortedProjects.map((project) => (
+        <a
+          href={project.data.url}
+          class="bg-btn-light text-btn-light-text hover:bg-btn-light-hover dark:bg-btn-dark dark:text-btn-dark-text dark:hover:bg-btn-dark-hover flex flex-col rounded-md p-4 transition-all duration-300 active:scale-95"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <div class="mb-3 overflow-hidden rounded-md">
+            <Image
+              src={project.data.image || "/placeholder.svg"}
+              alt={project.data.title}
+              width={400}
+              height={225}
+              class="w-full h-auto object-cover transition-transform duration-300 hover:scale-105"
+            />
+          </div>
+          <h3 class="text-lg font-medium">{project.data.title}</h3>
+          <p class="mt-2 text-sm leading-snug text-pretty opacity-80">
+            {project.data.description}
+          </p>
+          {project.data.tags && project.data.tags.length > 0 && (
+            <div class="mt-3 flex flex-wrap gap-2">
+              {project.data.tags.map((tag) => (
+                <span class="text-xs px-2 py-1 bg-gray-100 dark:bg-gray-800 rounded-full">
+                  {tag}
+                </span>
+              ))}
+            </div>
+          )}
+        </a>
+      ))
+    }
+  </div>
+</section> -->

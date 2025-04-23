@@ -1,0 +1,10 @@
+title: Catálogo y Dashboard Agroindustria
+description: Un catálogo de animales para feria con su dashboard
+url: https://concursosganaderos2025.vercel.app/
+image: ./catalogo-y-dashboard-agroindustria/image.jpg
+order: 3
+tags:
+  - React
+  - NextJs
+  - Prisma
+  - Neon

@@ -1,0 +1,52 @@
+---
+import { type CollectionEntry } from "astro:content"; // Tipo para validar entradas de contenido
+import { ClientRouter } from "astro:transitions"; // Navegación tipo SPA
+import Seo from "@components/Seo/Seo.astro"; // SEO dinámico
+
+export interface Props {
+  title: string;
+  description: string;
+  image?: ImageMetadata;
+  noindex?: boolean;
+}
+
+const { title, description, image, noindex = false } = Astro.props as Props;
+---
+
+<!-- Configuración general -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<!-- Fuente Satoshi (opcional) -->
+<!--
+<link rel="preconnect" href="https://api.fontshare.com" />
+<link
+  href="https://api.fontshare.com/v2/css?f[]=satoshi@700,500,400&display=swap"
+  rel="stylesheet"
+/>
+-->
+
+<!-- Favicons alojados en /favicons/ -->
+<link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.png" />
+<link rel="icon" type="image/png" sizes="96x96" href="/favicons/favicon-96x96.png" />
+<link rel="icon" type="image/svg+xml" href="/favicons/favicon.svg" />
+<link rel="shortcut icon" href="/favicons/favicon.ico" />
+
+<!-- Web App Manifest para PWA -->
+<link rel="manifest" href="/favicons/site.webmanifest" />
+
+<!-- Iconos referenciados dentro del manifest (no se linkean manualmente):
+     - web-app-manifest-192x192.png
+     - web-app-manifest-512x512.png -->
+
+<!-- Configuración adicional -->
+<meta name="apple-mobile-web-app-title" content="uxjairodev" />
+<meta name="theme-color" content="#ffffff" />
+<meta name="generator" content={Astro.generator} />
+<link rel="sitemap" href="/sitemap-index.xml" />
+
+<!-- SEO dinámico desde componente -->
+<Seo title={title} description={description} image={image} noindex={noindex} />
+
+<!-- Navegación SPA -->
+<ClientRouter fallback="none" />

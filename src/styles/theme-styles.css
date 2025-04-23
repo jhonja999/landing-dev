@@ -1,0 +1,120 @@
+/* theme-styles.css - Añadir a la carpeta styles */
+
+/* Variables de colores para modo claro y oscuro */
+:root {
+  /* Colores base para modo claro */
+  --color-bg-primary: #f8fafc;
+  --color-bg-secondary: #eef2ff;
+  --color-bg-tertiary: #e0e7ff;
+  
+  --color-text-primary: #1e293b;
+  --color-text-secondary: #334155;
+  --color-text-muted: #64748b;
+  
+  --color-accent-primary: #4f46e5;
+  --color-accent-secondary: #818cf8;
+  
+  --color-border: #e2e8f0;
+  --color-card-bg: rgba(255, 255, 255, 0.8);
+  --color-card-shadow: rgba(0, 0, 0, 0.07);
+  
+  --blur-strength: 8px;
+  
+  /* Transiciones para cambios de tema */
+  --transition-speed: 0.3s;
+  --transition-curve: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Variables para modo oscuro */
+.dark {
+  --color-bg-primary: #0f172a;
+  --color-bg-secondary: #1e293b;
+  --color-bg-tertiary: #334155;
+  
+  --color-text-primary: #f1f5f9;
+  --color-text-secondary: #cbd5e1;
+  --color-text-muted: #94a3b8;
+  
+  --color-accent-primary: #818cf8;
+  --color-accent-secondary: #6366f1;
+  
+  --color-border: #334155;
+  --color-card-bg: rgba(15, 23, 42, 0.75);
+  --color-card-shadow: rgba(0, 0, 0, 0.2);
+  
+  --blur-strength: 12px;
+}
+
+/* Aplicar colores a elementos HTML comunes */
+body {
+  background-color: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  transition: background-color var(--transition-speed) var(--transition-curve),
+              color var(--transition-speed) var(--transition-curve);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--color-text-primary);
+  transition: color var(--transition-speed) var(--transition-curve);
+}
+
+a {
+  color: var(--color-accent-primary);
+  transition: color var(--transition-speed) var(--transition-curve);
+}
+
+a:hover {
+  color: var(--color-accent-secondary);
+}
+
+/* Transición para cambio de tema */
+.theme-transition {
+  transition: background-color 0.5s ease, color 0.5s ease !important;
+}
+
+.theme-transition * {
+  transition: background-color 0.5s ease, 
+              color 0.5s ease, 
+              border-color 0.5s ease, 
+              box-shadow 0.5s ease !important;
+}
+
+/* Mejoras para elementos específicos de tu página */
+#profile {
+  transition: background-color var(--transition-speed) var(--transition-curve);
+}
+
+/* Tarjetas de proyectos y enlaces */
+.card, .link-card, .project-card {
+  background-color: var(--color-card-bg);
+  border: 1px solid var(--color-border);
+  box-shadow: 0 4px 12px var(--color-card-shadow);
+  backdrop-filter: blur(var(--blur-strength));
+  transition: all var(--transition-speed) var(--transition-curve);
+}
+
+.card:hover, .link-card:hover, .project-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px var(--color-card-shadow);
+}
+
+/* Mejora para el fondo con blur */
+.dark .bg-black\/80 {
+  background-color: rgba(0, 0, 0, 0.7) !important;
+}
+
+.bg-white\/20 {
+  background-color: rgba(255, 255, 255, 0.6) !important;
+}
+
+/* Mejora para imágenes de perfil */
+#profile figure img {
+  border: 3px solid var(--color-accent-primary);
+  transition: border-color var(--transition-speed) var(--transition-curve),
+              transform 0.3s ease;
+}
+
+#profile figure img:hover {
+  transform: scale(1.05);
+  border-color: var(--color-accent-secondary);
+}

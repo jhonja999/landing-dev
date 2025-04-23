@@ -1,0 +1,9 @@
+title: I.A ChatGPT 100% local
+description: Uso de chatbot potenciada por IA, corre con tu propio hardware
+url: https://github.com/jhonja999/GPTweb
+image: ./i-a-chat-gpt-100-local/image.jpg
+order: 5
+tags:
+  - Javascript
+  - Llama
+  - HTML

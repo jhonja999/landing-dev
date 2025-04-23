@@ -1,0 +1,9 @@
+title: Sistema de Gestión de Tareas
+description: Una herramienta colaborativa de gestión de proyectos
+url: https://concursosganaderos2025.vercel.app/
+image: ./sistema-de-gestion-de-tareas/image.jpg
+order: 2
+tags:
+  - React Native
+  - Node.js
+  - MongoDB

@@ -1,0 +1,51 @@
+---
+import { type CollectionEntry, getCollection } from "astro:content"; // Importa el tipo de entrada de contenido y una función para obtener colecciones
+// Importación del layout que incluye <head> con SEO y favicons
+import BaseHead from "@layouts/BaseHead.astro";
+// Importa el botón de cambio de tema
+import ThemeToggle from "@components/ThemeToggle.astro";
+// Importa los estilos globales del sitio
+import "@/styles/global.css";
+// Obtiene la colección "bio" definida en el esquema de contenido de Astro
+const bio = await getCollection("bio");
+// Extrae el primer perfil de la colección (se asume que solo hay uno)
+const profile = bio[0];
+// Interfaz de props para las páginas que usan este layout
+interface Props {
+  title: string; // Título de la página
+  description: string; // Descripción para SEO
+  image?: ImageMetadata; // Imagen opcional (OpenGraph, SEO)
+  noindex?: boolean; // Si true, bloquea indexado por motores de búsqueda
+}
+// Extrae las props pasadas al layout
+const { title, description, image, noindex = false } = Astro.props as Props;
+---
+
+<!doctype html>
+<!-- Define el idioma como español. Puedes cambiar a "en" si todo tu contenido está en inglés -->
+<html
+  lang="es"
+  transition:animate="fade"
+  class={profile.data.theme == "dark" ? "dark" : ""}
+>
+  <!-- Aplica clase 'dark' al <html> si el perfil tiene tema oscuro activado -->
+  <head>
+    <!-- Inserta metadatos SEO, favicon, y más, usando el layout BaseHead -->
+    <BaseHead
+      title={title}
+      description={description}
+      image={image ? image : undefined}
+      noindex={noindex}
+    />
+  </head>
+  <body id="body" class="min-h-[100lvh]">
+    <!-- Usa mínimo 100% del viewport en altura -->
+    <main>
+      <!-- Aquí se insertará el contenido de la página que usa este layout -->
+      <slot />
+    </main>
+    
+    <!-- Botón para cambiar entre modo claro y oscuro -->
+    <ThemeToggle />
+  </body>
+</html>

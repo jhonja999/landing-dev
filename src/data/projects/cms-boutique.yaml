@@ -1,0 +1,10 @@
+title: CMS Boutique
+description: Un CMS para Productos Ecommerce
+url: https://github.com/jhonja999/cms-boutique-front
+image: ./cms-boutique/image.jpg
+order: 4
+tags:
+  - Strapi
+  - TypeScript
+  - Tailwind
+  - NextJs

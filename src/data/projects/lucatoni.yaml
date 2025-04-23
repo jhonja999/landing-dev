@@ -1,0 +1,10 @@
+title: Lucatoni
+description: Educational Cryptocurrency
+url: https://github.com/jhonja999/Lukatoni-frontend
+image: ./lucatoni/image.jpg
+order: 6
+tags:
+  - TypeScript
+  - JavaScript
+  - Ganache
+  - Truffle

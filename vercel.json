@@ -1,9 +1,8 @@
+
 {
-    "build": {
-      "env": {
-        "PNPM_HOME": ".pnpm",
-        "PNPM_VERSION": "10.0.0"
-      }
+  "build": {
+    "env": {
+      "PNPM_VERSION": "8.15.4"
     }
   }
-  
+}

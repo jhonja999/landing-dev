@@ -1,12 +1,10 @@
 # Bienvenido a Landing Pad 🚀
-
-Este es un tema gratuito para Astro creado por [Cosmic Themes](https://cosmicthemes.com/). Es un excelente lugar para alojar enlaces a tus diversos proyectos y redes sociales.
-
 Este proyecto es una **reimaginación tipo CMS para enlaces de portafolio**, basada en el diseño y funcionalidad del sitio original: [uxjairo.vercel.app](https://uxjairo.vercel.app).
 
 📌 Reimaginado y adaptado por **Jairo Vargas**  
 🎨 Diseño original por [Cosmic Themes](https://cosmicthemes.com/)
 
+Este es un tema gratuito para Astro creado por [Cosmic Themes](https://cosmicthemes.com/). Es un excelente lugar para alojar enlaces a tus diversos proyectos y redes sociales.
 [Demo del sitio web](https://landingpad.cosmicthemes.com/)
 
 ## Inicio Rápido

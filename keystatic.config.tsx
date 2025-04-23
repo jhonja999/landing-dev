@@ -19,10 +19,14 @@ export default config({
 	// cloud deployment is free to sign up (up to 3 users per team)
 	// docs: https://keystatic.com/docs/cloud
 	// create a Keystatic Cloud account here: https://keystatic.cloud/
-	cloud: { project: "cosmic-themes/landingpad" },
+	cloud: {
+		project: 'landing-dev/landing-dev',
+	  },
 	ui: {
-		brand: { name: "Cosmic Themes" },
+		brand: { name: "landing-dev" },
 	},
+
+
 	singletons: {
 		/**
 		 * * Bio and Config singleton

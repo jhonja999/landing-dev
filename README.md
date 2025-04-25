@@ -61,3 +61,5 @@ Todos los comandos se ejecutan desde la raíz del proyecto, desde una terminal:
 ### ¿Quieres aprender más?
 
 No dudes en revisar la [documentación de Astro](https://docs.astro.build).
+
+[!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://buymeacoffee.com/jjrvm999u) 
